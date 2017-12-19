@@ -18,13 +18,19 @@ Smile is well documented and please check out the
 [project website](http://haifengl.github.io/smile/)
 for programming guides and more information.
 
+#### publis to local maven repository
+```
+    git clone https://github.com/takun2s/smile_1.5.0_java7.git
+    cd smile_1.5.0_java7
+    sbt clean package publishM2
+```
 You can use the libraries through Maven central repository by adding the following to your project pom.xml file.
 ```
     <dependency>
-      <groupId>com.github.haifengl</groupId>
-      <artifactId>smile-core</artifactId>
-      <version>1.5.0</version>
-    </dependency>
+          <groupId>com.github.haifengl</groupId>
+          <artifactId>smile-core</artifactId>
+          <version>1.5.0</version>
+        </dependency>
 ```
 
 For NLP, use the artifactId smile-nlp.
