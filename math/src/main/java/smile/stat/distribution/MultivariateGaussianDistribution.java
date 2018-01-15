@@ -20,6 +20,8 @@ import smile.math.Math;
 import smile.math.matrix.Matrix;
 import smile.math.matrix.DenseMatrix;
 
+import java.util.Arrays;
+
 /**
  * Multivariate Gaussian distribution.
  *
@@ -153,16 +155,28 @@ public class MultivariateGaussianDistribution extends AbstractMultivariateDistri
         init();
     }
 
+    private DenseMatrix getI(int d, double value) {
+        double[] x = new double[d] ;
+        Arrays.fill(x, value);
+        return Matrix.diag(x) ;
+    }
+
+    private static double LOG_DET = Math.log(1e-300) ;
     /**
      * Initialize the object.
      */
     private void init() {
         dim = mu.length;
-        Cholesky cholesky = sigma.cholesky(false);
+        DenseMatrix I = getI(dim, 1e-4) ;
+        Cholesky cholesky = I.add(sigma).cholesky(false);
         sigmaInv = cholesky.inverse();
         sigmaDet = cholesky.det();
         sigmaL = cholesky.getL();
-        pdfConstant = (dim * Math.log(2 * Math.PI) + Math.log(sigmaDet)) / 2.0;
+        double log_det = LOG_DET ;
+        if(sigmaDet > 1e-300) {
+            log_det = Math.log(sigmaDet) ;
+        }
+        pdfConstant = (dim * Math.log(2 * Math.PI) + log_det) / 2.0;
     }
 
     /**
